@@ -1,0 +1,35 @@
+button.btn i {
+  background: none;
+  border: none;
+  color: inherit;
+  font-size: 20px;
+  padding: 0;
+}
+
+button.btn:hover i {
+  opacity: 0.7;
+}
+
+button.btn-warning, button.btn-success, button.btn-danger {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  color: inherit;
+}
+
+button.btn-warning:hover,
+button.btn-success:hover,
+button.btn-danger:hover {
+  opacity: 0.7;
+}
+
+button.btn-link {
+  background-color: transparent;
+  border: none;
+  color: inherit;
+  padding: 0;
+}
+
+button.btn-link:hover {
+  opacity: 0.7;
+}
