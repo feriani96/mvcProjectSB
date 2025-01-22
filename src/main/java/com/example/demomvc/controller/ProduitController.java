@@ -53,10 +53,12 @@ public class ProduitController {
     }
 
     @PostMapping("/update/{id}")
-    public String updateProduit(@PathVariable Long id,
-                                @RequestParam String libelle,
-                                @RequestParam Double prix,
-                                @RequestParam Integer qteStock) {
+    public String updateProduit(
+        @PathVariable Long id,
+        @RequestParam("libelle") String libelle,
+        @RequestParam("prix") double prix,
+        @RequestParam("qteStock") int qteStock) {
+
         Produit produit = productService.findById(id);
         if (produit != null) {
             produit.setLibelle(libelle);
@@ -64,6 +66,7 @@ public class ProduitController {
             produit.setQteStock(qteStock);
             productService.save(produit);
         }
+
         isEditing.remove(id);
         return "redirect:/produits";
     }
