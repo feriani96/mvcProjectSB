@@ -1,3 +1,4 @@
+/* Styles généraux */
 button.btn i {
   background: none;
   border: none;
@@ -32,4 +33,23 @@ button.btn-link {
 
 button.btn-link:hover {
   opacity: 0.7;
+}
+
+/* Style pour le tableau des produits */
+table th, table td {
+  vertical-align: middle;
+}
+
+/* Alignement des icônes de l'action */
+.table .text-center {
+  text-align: center;
+}
+
+/* Ajustement des champs dans le formulaire d'édition */
+form .form-control {
+  width: 100%;
+}
+
+form .mb-2 {
+  margin-bottom: 1rem;
 }

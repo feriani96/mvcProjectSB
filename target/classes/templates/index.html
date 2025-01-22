@@ -48,7 +48,7 @@
       <th>Libellé</th>
       <th>Prix</th>
       <th>Quantité en Stock</th>
-      <th>Actions</th>
+      <th class="text-center">Actions</th>
     </tr>
     </thead>
     <tbody>
@@ -67,29 +67,27 @@
         <span th:text="${produit.qteStock}"></span>
       </td>
 
-      <td>
+      <td class="text-center">
         <!-- Mode édition -->
         <form th:if="${isEditing.contains(produit.id)}"
               th:action="@{/produits/update/{id}(id=${produit.id})}"
-              method="post" class="d-flex align-items-center">
-          <input type="text" name="libelle" th:value="${produit.libelle}" class="form-control me-2" placeholder="Libellé" required>
-          <input type="number" name="prix" step="0.01" th:value="${produit.prix}" class="form-control me-2" placeholder="Prix" required>
-          <input type="number" name="qteStock" th:value="${produit.qteStock}" class="form-control me-2" placeholder="Quantité" required>
-          <button type="submit" class="btn btn-link"><i class="fas fa-check"></i></button>
-          <a th:href="@{/produits/cancel-edit/{id}(id=${produit.id})}" class="btn btn-danger ms-2"><i class="fas fa-times"></i></a>
+              method="post" class="d-flex flex align-items-center">
+          <input type="text" name="libelle" th:value="${produit.libelle}" class="form-control mb-2" placeholder="Libellé" required>
+          <input type="number" name="prix" step="0.01" th:value="${produit.prix}" class="form-control mb-2" placeholder="Prix" required>
+          <input type="number" name="qteStock" th:value="${produit.qteStock}" class="form-control mb-2" placeholder="Quantité" required>
+          <button type="submit" class="btn btn-success mb-2"><i class="fas fa-check"></i></button>
+          <a th:href="@{/produits/cancel-edit/{id}(id=${produit.id})}" class="btn btn-danger mb-2"><i class="fas fa-times"></i></a>
         </form>
-      </td>
-
-      <td>
-        <!-- Actions : Édition / Suppression -->
+        <!-- Mode normal -->
         <div th:if="${!isEditing.contains(produit.id)}">
-          <!-- Actions : Édition -->
+          <!-- édition -->
           <form th:action="@{/produits/edit/{id}(id=${produit.id})}" method="post" class="d-inline">
             <button type="submit" class="btn btn-link" aria-label="Éditer le produit">
               <i class="fas fa-edit"></i>
             </button>
           </form>
-          <!-- Actions : Suppression -->
+
+          <!-- suppression -->
           <form th:action="@{/produits/delete/{id}(id=${produit.id})}" method="post" class="d-inline">
             <button type="submit" class="btn btn-link text-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')">
               <i class="fas fa-trash-alt"></i>
@@ -102,7 +100,6 @@
   </table>
 </div>
 
-<!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

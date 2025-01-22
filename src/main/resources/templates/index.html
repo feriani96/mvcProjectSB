@@ -48,7 +48,7 @@
       <th>Libellé</th>
       <th>Prix</th>
       <th>Quantité en Stock</th>
-      <th>Actions</th>
+      <th class="text-center">Actions</th>
     </tr>
     </thead>
     <tbody>
@@ -67,21 +67,18 @@
         <span th:text="${produit.qteStock}"></span>
       </td>
 
-      <td>
+      <td class="text-center">
         <!-- Mode édition -->
         <form th:if="${isEditing.contains(produit.id)}"
               th:action="@{/produits/update/{id}(id=${produit.id})}"
-              method="post" class="d-flex align-items-center">
-          <input type="text" name="libelle" th:value="${produit.libelle}" class="form-control me-2" placeholder="Libellé" required>
-          <input type="number" name="prix" step="0.01" th:value="${produit.prix}" class="form-control me-2" placeholder="Prix" required>
-          <input type="number" name="qteStock" th:value="${produit.qteStock}" class="form-control me-2" placeholder="Quantité" required>
-          <button type="submit" class="btn btn-link"><i class="fas fa-check"></i></button>
-          <a th:href="@{/produits/cancel-edit/{id}(id=${produit.id})}" class="btn btn-danger ms-2"><i class="fas fa-times"></i></a>
+              method="post" class="d-flex flex align-items-center">
+          <input type="text" name="libelle" th:value="${produit.libelle}" class="form-control mb-2" placeholder="Libellé" required>
+          <input type="number" name="prix" step="0.01" th:value="${produit.prix}" class="form-control mb-2" placeholder="Prix" required>
+          <input type="number" name="qteStock" th:value="${produit.qteStock}" class="form-control mb-2" placeholder="Quantité" required>
+          <button type="submit" class="btn btn-success mb-2"><i class="fas fa-check"></i></button>
+          <a th:href="@{/produits/cancel-edit/{id}(id=${produit.id})}" class="btn btn-danger mb-2"><i class="fas fa-times"></i></a>
         </form>
-      </td>
-
-      <td>
-        <!-- Actions -->
+        <!-- Mode normal -->
         <div th:if="${!isEditing.contains(produit.id)}">
           <!-- édition -->
           <form th:action="@{/produits/edit/{id}(id=${produit.id})}" method="post" class="d-inline">
