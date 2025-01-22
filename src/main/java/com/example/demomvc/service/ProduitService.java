@@ -35,5 +35,4 @@ public class ProduitService {
     public List<Produit> filterProduits(String libelle, double prixMin, double prixMax) {
         return produitRepository.filterProduits(libelle, prixMin, prixMax);
     }
-
 }

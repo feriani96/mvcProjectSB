@@ -1,16 +1,15 @@
 package com.example.demomvc.controller;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import com.example.demomvc.model.Produit;
 import com.example.demomvc.service.ProduitService;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/produits")
@@ -35,6 +34,12 @@ public class ProduitController {
         return "redirect:/produits";
     }
 
+    @GetMapping("/ajouter")
+    public String showAddProduitForm(Model model) {
+        model.addAttribute("produit", new Produit());
+        return "ajouter-produit";
+    }
+
     @PostMapping("/delete/{id}")
     public String deleteProduit(@PathVariable Long id) {
         productService.delete(id);
@@ -48,13 +53,16 @@ public class ProduitController {
     }
 
     @PostMapping("/update/{id}")
-    public String updateProduit(@PathVariable Long id, @ModelAttribute Produit produit) {
-        Produit existingProduit = productService.findById(id);
-        if (existingProduit != null) {
-            existingProduit.setLibelle(produit.getLibelle());
-            existingProduit.setPrix(produit.getPrix());
-            existingProduit.setQteStock(produit.getQteStock());
-            productService.save(existingProduit);
+    public String updateProduit(@PathVariable Long id,
+                                @RequestParam String libelle,
+                                @RequestParam Double prix,
+                                @RequestParam Integer qteStock) {
+        Produit produit = productService.findById(id);
+        if (produit != null) {
+            produit.setLibelle(libelle);
+            produit.setPrix(prix);
+            produit.setQteStock(qteStock);
+            productService.save(produit);
         }
         isEditing.remove(id);
         return "redirect:/produits";
@@ -62,6 +70,12 @@ public class ProduitController {
 
     @PostMapping("/cancel-edit/{id}")
     public String cancelEdit(@PathVariable Long id) {
+        isEditing.remove(id);
+        return "redirect:/produits";
+    }
+
+    @GetMapping("/confirm-edit/{id}")
+    public String confirmEdit(@PathVariable Long id) {
         isEditing.remove(id);
         return "redirect:/produits";
     }

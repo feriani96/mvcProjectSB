@@ -19,14 +19,12 @@ public class Produit {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name="libelle", nullable=false)
+    @Column(name="libelle", nullable=true)
     private String libelle;
 
-    @Column(name="prix", nullable=false)
+    @Column(name="prix", nullable=true)
     private Double prix;
 
-    @Column(name="qteStock", nullable=false)
+    @Column(name="qteStock", nullable=true)
     private Integer qteStock;
-
-
 }

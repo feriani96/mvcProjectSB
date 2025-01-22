@@ -3,22 +3,45 @@
 <head>
   <meta charset="UTF-8">
   <title>Liste des Produits</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <!-- Liens CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-<div class="container">
-  <h1 class="mt-4">Liste des Produits</h1>
+<!-- Barre de navigation -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Produits</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Produits
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" th:href="@{/produits}">Liste des Produits</a></li>
+            <li><a class="dropdown-item" th:href="@{/produits/ajouter}">Ajouter un Produit</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
 
-  <form th:action="@{/produits/add}" method="post" class="form-inline mb-4">
-    <input type="text" name="libelle" placeholder="Libellé" required class="form-control mr-2">
-    <input type="number" step="0.01" name="prix" placeholder="Prix" required class="form-control mr-2">
-    <input type="number" name="qteStock" placeholder="Quantité en Stock" required class="form-control mr-2">
-    <button type="submit" class="btn btn-primary">Ajouter Produit</button>
-  </form>
+<!-- Contenu principal -->
+<div class="container mt-4">
+  <h1>Liste des Produits</h1>
+
+  <!-- Message de succès -->
+  <div th:if="${successMessage}" class="alert alert-success">
+    <p th:text="${successMessage}"></p>
+  </div>
 
   <!-- Tableau des produits -->
-  <table class="table">
+  <table class="table table-striped">
     <thead>
     <tr>
       <th>ID</th>
@@ -29,59 +52,57 @@
     </tr>
     </thead>
     <tbody>
+    <!-- Parcours des produits -->
     <tr th:each="produit : ${produits}">
       <td th:text="${produit.id}"></td>
 
+      <!-- Mode affichage -->
+      <td th:if="${!isEditing.contains(produit.id)}">
+        <span th:text="${produit.libelle}"></span>
+      </td>
+      <td th:if="${!isEditing.contains(produit.id)}">
+        <span th:text="${produit.prix}"></span>
+      </td>
+      <td th:if="${!isEditing.contains(produit.id)}">
+        <span th:text="${produit.qteStock}"></span>
+      </td>
+
       <td>
-        <div th:if="${!isEditing.contains(produit.id)}" th:text="${produit.libelle}"></div>
-        <form th:action="@{/produits/update/{id}(id=${produit.id})}" method="post"
-              th:if="${isEditing.contains(produit.id)}">
-          <input type="text" name="libelle" th:value="${produit.libelle}" class="form-control">
+        <!-- Mode édition -->
+        <form th:if="${isEditing.contains(produit.id)}"
+              th:action="@{/produits/update/{id}(id=${produit.id})}"
+              method="post" class="d-flex align-items-center">
+          <input type="text" name="libelle" th:value="${produit.libelle}" class="form-control me-2" placeholder="Libellé" required>
+          <input type="number" name="prix" step="0.01" th:value="${produit.prix}" class="form-control me-2" placeholder="Prix" required>
+          <input type="number" name="qteStock" th:value="${produit.qteStock}" class="form-control me-2" placeholder="Quantité" required>
+          <button type="submit" class="btn btn-link"><i class="fas fa-check"></i></button>
+          <a th:href="@{/produits/cancel-edit/{id}(id=${produit.id})}" class="btn btn-danger ms-2"><i class="fas fa-times"></i></a>
         </form>
       </td>
 
       <td>
-        <div th:if="${!isEditing.contains(produit.id)}" th:text="${produit.prix}"></div>
-        <input type="number" name="prix" step="0.01" th:value="${produit.prix}" class="form-control"
-               th:if="${isEditing.contains(produit.id)}">
-      </td>
-
-      <td>
-        <div th:if="${!isEditing.contains(produit.id)}" th:text="${produit.qteStock}"></div>
-        <input type="number" name="qteStock" th:value="${produit.qteStock}" class="form-control"
-               th:if="${isEditing.contains(produit.id)}">
-      </td>
-
-      <td>
-        <form th:action="@{/produits/edit/{id}(id=${produit.id})}" method="post"
-              th:if="${!isEditing.contains(produit.id)}" class="d-inline">
-          <button type="submit" class="btn btn-link">
-            <i class="fas fa-edit"></i>
-          </button>
-        </form>
-
-        <div th:if="${isEditing.contains(produit.id)}" class="d-inline">
-          <button type="submit" class="btn btn-link text-success">
-            <i class="fas fa-check"></i>
-          </button>
+        <!-- Actions : Édition / Suppression -->
+        <div th:if="${!isEditing.contains(produit.id)}">
+          <!-- Actions : Édition -->
+          <form th:action="@{/produits/edit/{id}(id=${produit.id})}" method="post" class="d-inline">
+            <button type="submit" class="btn btn-link" aria-label="Éditer le produit">
+              <i class="fas fa-edit"></i>
+            </button>
           </form>
-          <form th:action="@{/produits/cancel-edit/{id}(id=${produit.id})}" method="post" class="d-inline">
-            <button type="submit" class="btn btn-link text-danger">
-              <i class="fas fa-times"></i>
+          <!-- Actions : Suppression -->
+          <form th:action="@{/produits/delete/{id}(id=${produit.id})}" method="post" class="d-inline">
+            <button type="submit" class="btn btn-link text-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')">
+              <i class="fas fa-trash-alt"></i>
             </button>
           </form>
         </div>
-
-        <form th:action="@{/produits/delete/{id}(id=${produit.id})}" method="post" class="d-inline">
-          <button type="submit" class="btn btn-link text-danger"
-                  onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')">
-            <i class="fas fa-trash-alt"></i>
-          </button>
-        </form>
       </td>
     </tr>
     </tbody>
   </table>
 </div>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
