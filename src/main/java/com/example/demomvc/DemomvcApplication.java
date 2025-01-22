@@ -10,7 +10,6 @@ import com.example.demomvc.service.ProduitService;
 
 @SpringBootApplication
 public class DemomvcApplication implements CommandLineRunner {
-	
 
 	@Autowired
     private ProduitService produitService;
@@ -21,10 +20,6 @@ public class DemomvcApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        produitService.save(new Produit(null, "Produit 1", 10.0, 50));
-        produitService.save(new Produit(null, "Produit 2", 20.0, 30));
-
-        
         System.out.println("Produits ajoutés avec succès");
     }
 

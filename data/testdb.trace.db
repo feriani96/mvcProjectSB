@@ -1,0 +1,6 @@
+2025-01-22 23:29:51.224643+01:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PRODUIT" not found (this database is empty); SQL statement:
+insert into produit (libelle,prix,qte_stock,id) values (?,?,?,default) [42104-224]
+2025-01-22 23:30:17.503100+01:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PRODUIT" not found (this database is empty); SQL statement:
+insert into produit (libelle,prix,qte_stock,id) values (?,?,?,default) [42104-224]
