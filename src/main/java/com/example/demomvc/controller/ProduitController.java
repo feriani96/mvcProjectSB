@@ -25,6 +25,7 @@ public class ProduitController {
         List<Produit> produits = productService.findAll();
         model.addAttribute("produits", produits);
         model.addAttribute("isEditing", isEditing);
+        model.addAttribute("successMessage", null);
         return "index";
     }
 

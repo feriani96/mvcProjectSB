@@ -10,13 +10,15 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid">
     <a class="navbar-brand" href="#">Produits</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+             aria-expanded="false">
             Produits
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -47,45 +49,37 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="produit : ${produits}">
-      <td th:text="${produit.id}"></td>
-        <td>
-          <span th:if="${!isEditing.contains(produit.id)}" th:text="${produit.libelle}"></span>
-          <form th:if="${isEditing.contains(produit.id)}" th:action="@{/produits/update/{id}(id=${produit.id})}" method="post">
-            <input type="text" name="libelle" th:value="${produit.libelle}" class="form-control" />
-        </td>
-        <td>
-          <span th:if="${!isEditing.contains(produit.id)}" th:text="${produit.prix}"></span>
-          <form th:if="${isEditing.contains(produit.id)}" th:action="@{/produits/update/{id}(id=${produit.id})}" method="post">
-            <input type="number" name="prix" step="0.01" th:value="${produit.prix}" class="form-control" />
-        </td>
-        <td>
-          <span th:if="${!isEditing.contains(produit.id)}" th:text="${produit.qteStock}"></span>
-          <form th:if="${isEditing.contains(produit.id)}" th:action="@{/produits/update/{id}(id=${produit.id})}" method="post">
-            <input type="number" name="qteStock" th:value="${produit.qteStock}" class="form-control" />
-        </td>
-        <td th:if="${isEditing.contains(produit.id)}" class="text-center">
-          <button type="submit" class="btn btn-success"><i class="fas fa-check"></i></button>
-          <a th:href="@{/produits/cancel-edit/{id}(id=${produit.id})}" class="btn btn-danger"><i class="fas fa-times"></i></a>
-          </form>
-        </td>
-      </td>
-      <td class="text-center">
-        <!-- Actions par défaut (édition et suppression) -->
-        <div th:if="${!isEditing.contains(produit.id)}">
+      <tr th:each="produit : ${produits}">
+        <td th:text="${produit.id}"></td>
+        <td th:if="${!isEditing.contains(produit.id)}" th:text="${produit.libelle}"></td>
+        <td th:if="${!isEditing.contains(produit.id)}" th:text="${produit.prix}"></td>
+        <td th:if="${!isEditing.contains(produit.id)}" th:text="${produit.qteStock}"></td>
+        <td th:if="${!isEditing.contains(produit.id)}" class="text-center">
           <form th:action="@{/produits/edit/{id}(id=${produit.id})}" method="post" class="d-inline">
             <button type="submit" class="btn btn-link">
               <i class="fas fa-edit"></i>
             </button>
           </form>
           <form th:action="@{/produits/delete/{id}(id=${produit.id})}" method="post" class="d-inline">
-            <button type="submit" class="btn btn-link text-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')">
+            <button type="submit" class="btn btn-link text-danger">
               <i class="fas fa-trash-alt"></i>
             </button>
           </form>
-        </div>
-      </td>
-    </tr>
+        </td>
+
+        <!-- Mode édition -->
+        <form th:if="${isEditing.contains(produit.id)}" th:action="@{/produits/update/{id}(id=${produit.id})}"
+              method="post">
+          <td><input type="text" name="libelle" th:value="${produit.libelle}"/></td>
+          <td><input type="number" name="prix" step="0.01" th:value="${produit.prix}"/></td>
+          <td><input type="number" name="qteStock" th:value="${produit.qteStock}"/></td>
+          <td method="post" class="text-center">
+            <button type="submit" class="btn btn-success"><i class="fas fa-check"></i></button>
+            <a th:href="@{/produits/cancel-edit/{id}(id=${produit.id})}" class="btn btn-danger"><i
+              class="fas fa-times"></i></a>
+          </td>
+        </form>
+      </tr>
     </tbody>
   </table>
 </div>
