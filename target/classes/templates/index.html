@@ -34,8 +34,13 @@
 <div class="container mt-4">
   <h1>Liste des Produits</h1>
 
-  <div th:if="${successMessage}" class="alert alert-success">
-    <p th:text="${successMessage}"></p>
+  <div th:if="${successMessage}" class="alert alert-success d-flex justify-content-between align-items-center" role="alert">
+    <span>
+      <i class="fas fa-check-circle"></i> <span th:text="${successMessage}"></span>
+    </span>
+    <span>
+      <i class="fas fa-times-circle" data-bs-dismiss="alert" aria-label="Close"></i>
+    </span>
   </div>
 
   <table class="table table-striped">
@@ -49,37 +54,40 @@
     </tr>
     </thead>
     <tbody>
-      <tr th:each="produit : ${produits}">
-        <td th:text="${produit.id}"></td>
-        <td th:if="${!isEditing.contains(produit.id)}" th:text="${produit.libelle}"></td>
-        <td th:if="${!isEditing.contains(produit.id)}" th:text="${produit.prix}"></td>
-        <td th:if="${!isEditing.contains(produit.id)}" th:text="${produit.qteStock}"></td>
-        <td th:if="${!isEditing.contains(produit.id)}" class="text-center">
-          <form th:action="@{/produits/edit/{id}(id=${produit.id})}" method="post" class="d-inline">
-            <button type="submit" class="btn btn-link">
-              <i class="fas fa-edit"></i>
-            </button>
-          </form>
-          <form th:action="@{/produits/delete/{id}(id=${produit.id})}" method="post" class="d-inline">
-            <button type="submit" class="btn btn-link text-danger">
-              <i class="fas fa-trash-alt"></i>
+    <tr th:each="produit : ${produits}">
+      <td th:text="${produit.id}"></td>
+      <td th:if="${!isEditing.contains(produit.id)}" th:text="${produit.libelle}"></td>
+      <td th:if="${!isEditing.contains(produit.id)}" th:text="${produit.prix}"></td>
+      <td th:if="${!isEditing.contains(produit.id)}" th:text="${produit.qteStock}"></td>
+      <td th:if="${!isEditing.contains(produit.id)}" class="text-center">
+        <form th:action="@{/produits/edit/{id}(id=${produit.id})}" method="post" class="d-inline">
+          <button type="submit" class="btn btn-link">
+            <i class="fas fa-edit"></i>
+          </button>
+        </form>
+        <form th:action="@{/produits/delete/{id}(id=${produit.id})}" method="post" class="d-inline">
+          <button type="submit" class="btn btn-link text-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+        </form>
+      </td>
+
+      <!-- Mode édition -->
+      <form th:if="${isEditing.contains(produit.id)}" th:action="@{/produits/update/{id}(id=${produit.id})}"
+            method="post">
+        <td><input type="text" name="libelle" th:value="${produit.libelle}"/></td>
+        <td><input type="number" name="prix" step="0.01" th:value="${produit.prix}"/></td>
+        <td><input type="number" name="qteStock" th:value="${produit.qteStock}"/></td>
+        <td method="post" class="text-center">
+          <button type="submit" class="btn btn-success"><i class="fas fa-check"></i></button>
+          <form th:action="@{/produits/cancel-edit/{id}(id=${produit.id})}" method="post" class="d-inline">
+            <button type="submit" class="btn btn-danger">
+              <i class="fas fa-times"></i>
             </button>
           </form>
         </td>
-
-        <!-- Mode édition -->
-        <form th:if="${isEditing.contains(produit.id)}" th:action="@{/produits/update/{id}(id=${produit.id})}"
-              method="post">
-          <td><input type="text" name="libelle" th:value="${produit.libelle}"/></td>
-          <td><input type="number" name="prix" step="0.01" th:value="${produit.prix}"/></td>
-          <td><input type="number" name="qteStock" th:value="${produit.qteStock}"/></td>
-          <td method="post" class="text-center">
-            <button type="submit" class="btn btn-success"><i class="fas fa-check"></i></button>
-            <a th:href="@{/produits/cancel-edit/{id}(id=${produit.id})}" class="btn btn-danger"><i
-              class="fas fa-times"></i></a>
-          </td>
-        </form>
-      </tr>
+      </form>
+    </tr>
     </tbody>
   </table>
 </div>
